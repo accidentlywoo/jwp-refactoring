@@ -8,17 +8,21 @@ import kitchenpos.domain.Menu;
 import kitchenpos.domain.MenuGroup;
 import kitchenpos.domain.MenuProduct;
 import kitchenpos.domain.Product;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
+@Transactional
 class MenuServiceTest {
 	@Autowired
 	private MenuDao menuDao;
@@ -67,6 +71,37 @@ class MenuServiceTest {
 	}
 
 	@Test
+	@DisplayName("메뉴의 목록을 조회할 수 있다.")
+	public void 메뉴목록조회() {
+		final List<MenuProduct> menuProducts = new ArrayList<>();
+
+		MenuProduct menuProduct = new MenuProduct();
+		Product product = 상품생성();
+
+		menuProduct.setProductId(product.getId());
+		menuProduct.setQuantity(3);
+
+		menuProducts.add(menuProduct);
+
+		Menu menu = new Menu();
+		MenuGroup menuGroup = 메뉴그룹생성();
+
+		menu.setMenuGroupId(menuGroup.getId());
+		menu.setMenuProducts(menuProducts);
+		menu.setPrice(product.getPrice().multiply(new BigDecimal(menuProduct.getQuantity())));
+		menu.setName("신상치킨x3");
+
+		menuService.create(menu);
+
+		List<Menu> menus = menuService.list();
+		assertThat(menus).isNotEmpty();
+		assertThat(menus)
+				.extracting("name")
+				.contains("신상치킨x3");
+	}
+
+	@Test
+	@DisplayName("메뉴등록 실패 가격은 Null 이되면 안됨")
 	public void 메뉴등록_실패_가격은_Null이면안됨() {
 		final List<MenuProduct> menuProducts = new ArrayList<>();
 
@@ -87,10 +122,11 @@ class MenuServiceTest {
 		menu.setName("신상치킨x3");
 
 		assertThatThrownBy(() -> menuService.create(menu))
-		.isInstanceOf(IllegalArgumentException.class);
+				.isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Test
+	@DisplayName("메뉴등록 실패 가격은 0 이되면 안됨")
 	public void 메뉴등록_실패_가격은_0이면안됨() {
 		final List<MenuProduct> menuProducts = new ArrayList<>();
 
@@ -115,6 +151,7 @@ class MenuServiceTest {
 	}
 
 	@Test
+	@DisplayName("메뉴등록 실패 메뉴그룹 세팅하지 않음")
 	public void 메뉴등록_실패_없는메뉴그룹() {
 		final List<MenuProduct> menuProducts = new ArrayList<>();
 
@@ -138,6 +175,7 @@ class MenuServiceTest {
 	}
 
 	@Test
+	@DisplayName("메뉴등록 실패 상품정보 세팅하지 않음")
 	public void 메뉴등록_실패_없는상품정보() {
 		final List<MenuProduct> menuProducts = new ArrayList<>();
 
@@ -160,6 +198,7 @@ class MenuServiceTest {
 	}
 
 	@Test
+	@DisplayName("메뉴등록 실패 메뉴의 가격은 메뉴에 등록된 상품리스트 가격의 총합과 같아야 한다.")
 	public void 메뉴등록_실패_상품리스트_가격_총합은_메뉴가격과_같아야한다() {
 		final List<MenuProduct> menuProducts = new ArrayList<>();
 

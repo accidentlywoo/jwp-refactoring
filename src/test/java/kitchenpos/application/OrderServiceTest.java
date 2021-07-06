@@ -3,9 +3,11 @@ package kitchenpos.application;
 import kitchenpos.dao.MenuGroupDao;
 import kitchenpos.dao.ProductDao;
 import kitchenpos.domain.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @SpringBootTest
+@Transactional
 class OrderServiceTest {
 	@Autowired
 	private TableService tableService;
@@ -60,6 +63,7 @@ class OrderServiceTest {
 	}
 
 	@Test
+	@DisplayName("주문 생성 실패 주문아이템 정보 세팅안됨")
 	public void 주문_생성_실패_주문아이템없음() {
 		List<OrderLineItem> orderLineItems = new ArrayList<>();
 
@@ -74,6 +78,7 @@ class OrderServiceTest {
 	}
 
 	@Test
+	@DisplayName("주문 생성 실패 메뉴 정보 세팅안됨")
 	public void 주문_생성_실패_메뉴정보없음() {
 		List<OrderLineItem> orderLineItems = new ArrayList<>();
 		OrderLineItem orderLineItem = new OrderLineItem();
@@ -91,6 +96,7 @@ class OrderServiceTest {
 	}
 
 	@Test
+	@DisplayName("주문 생성 실패 주문테이블 정보 세팅안됨")
 	public void 주문_생성_실패_주문테이블정보없음() {
 		List<OrderLineItem> orderLineItems = new ArrayList<>();
 		OrderLineItem orderLineItem = new OrderLineItem();
@@ -131,6 +137,7 @@ class OrderServiceTest {
 	}
 
 	@Test
+	@DisplayName("주문테이블 주문취소 처리 실패. 주문 상태가 COOKING 이면 주문취소 처리 불가")
 	public void 주문테이블_주문없음_처리_실패_주문상태가_COOKING_이면_변경안됨() {
 		List<OrderLineItem> orderLineItems = new ArrayList<>();
 		OrderLineItem orderLineItem = new OrderLineItem();
@@ -154,6 +161,7 @@ class OrderServiceTest {
 	}
 
 	@Test
+	@DisplayName("주문테이블 주문취소 처리 실패. 주문 상태가 MEAL 이면 주문취소 처리 불가")
 	public void 주문테이블_주문없음_처리_실패_주문상태가_MEAL_이면_변경안됨() {
 		List<OrderLineItem> orderLineItems = new ArrayList<>();
 		OrderLineItem orderLineItem = new OrderLineItem();

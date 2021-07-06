@@ -3,9 +3,11 @@ package kitchenpos.application;
 import kitchenpos.dao.OrderTableDao;
 import kitchenpos.domain.OrderTable;
 import kitchenpos.domain.TableGroup;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 @SpringBootTest
+@Transactional
 class TableGroupServiceTest {
 	@Autowired
 	private TableService tableService;
@@ -48,6 +51,7 @@ class TableGroupServiceTest {
 	}
 
 	@Test
+	@DisplayName("주문테이블그룹 생성 실패. 주문테이블 한개. 주문테이블이 두개이상이여야한다.")
 	public void 주문테이블그룹_생성_실패_주문테이블이_두개이상이여야한다_주문테이블한개() {
 		List<OrderTable> orderTables = new ArrayList<>();
 		OrderTable orderTable1 = 주문테이블생성(2, false);
@@ -61,6 +65,7 @@ class TableGroupServiceTest {
 	}
 
 	@Test
+	@DisplayName("주문테이블그룹 생성 실패. 빈 주문테이블. 주문테이블이 두개이상이여야한다.")
 	public void 주문테이블그룹_생성_실패_주문테이블이_두개이상이여야한다_빈주문테이블() {
 		List<OrderTable> orderTables = new ArrayList<>();
 
@@ -72,7 +77,8 @@ class TableGroupServiceTest {
 	}
 
 	@Test
-	public void 주문테이블그룹_생성_실패_주문테이블이_주문등록할_수_없는_상태여야한다() {
+	@DisplayName("주문테이블그룹 생성 실패. 주문테이블이 주문을 등록할 수 있는 상태여야한다.")
+	public void 주문테이블그룹_생성_실패_주문테이블이_주문등록할_수_있는_상태여야한다() {
 		List<OrderTable> orderTables = new ArrayList<>();
 		OrderTable orderTable1 = 주문테이블생성(2, false);
 

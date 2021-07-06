@@ -2,9 +2,11 @@ package kitchenpos.application;
 
 import kitchenpos.dao.ProductDao;
 import kitchenpos.domain.Product;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class ProductServiceTest {
 
 	@Autowired
@@ -37,6 +40,7 @@ class ProductServiceTest {
 	}
 
 	@Test
+	@DisplayName("상품 등록 실패. 상품금액 0미만 불가")
 	public void 상품_등록_실패_상품금액_0미만원_불가() {
 		Product product = new Product();
 
@@ -51,6 +55,7 @@ class ProductServiceTest {
 	}
 
 	@Test
+	@DisplayName("상품 등록 실패. 상품금액 null입력 불가")
 	public void 상품_등록_실패_상품금액_null원_불가() {
 		Product product = new Product();
 
