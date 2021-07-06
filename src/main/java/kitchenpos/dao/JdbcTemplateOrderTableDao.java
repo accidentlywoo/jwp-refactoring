@@ -93,12 +93,7 @@ public class JdbcTemplateOrderTableDao implements OrderTableDao {
         jdbcTemplate.update(sql, parameters);
     }
 
-    private OrderTable toEntity(final ResultSet resultSet) throws SQLException {
-        final OrderTable entity = new OrderTable();
-        entity.setId(resultSet.getLong(KEY_COLUMN_NAME));
-        entity.setTableGroupId(resultSet.getObject("table_group_id", Long.class));
-        entity.setNumberOfGuests(resultSet.getInt("number_of_guests"));
-        entity.setEmpty(resultSet.getBoolean("empty"));
-        return entity;
+    private OrderTable toEntity(final ResultSet rs) throws SQLException {
+        return new OrderTable(rs.getLong(KEY_COLUMN_NAME), rs.getObject("table_group_id", Long.class), rs.getInt("number_of_guests"), rs.getBoolean("empty"));
     }
 }

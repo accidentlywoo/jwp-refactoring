@@ -51,13 +51,10 @@ class MenuServiceTest {
 
 		menuProducts.add(menuProduct);
 
-		Menu menu = new Menu();
 		MenuGroup menuGroup = 메뉴그룹생성();
 
-		menu.setMenuGroupId(menuGroup.getId());
+		Menu menu = new Menu("신상치킨x3", product.getPrice().multiply(new BigDecimal(menuProduct.getQuantity())), menuGroup.getId());
 		menu.setMenuProducts(menuProducts);
-		menu.setPrice(product.getPrice().multiply(new BigDecimal(menuProduct.getQuantity())));
-		menu.setName("신상치킨x3");
 
 		Menu savedMenu = menuService.create(menu);
 		List<MenuProduct> menuProductList = savedMenu.getMenuProducts();
@@ -83,13 +80,10 @@ class MenuServiceTest {
 
 		menuProducts.add(menuProduct);
 
-		Menu menu = new Menu();
 		MenuGroup menuGroup = 메뉴그룹생성();
 
-		menu.setMenuGroupId(menuGroup.getId());
+		Menu menu = new Menu("신상치킨x3", product.getPrice().multiply(new BigDecimal(menuProduct.getQuantity())), menuGroup.getId());
 		menu.setMenuProducts(menuProducts);
-		menu.setPrice(product.getPrice().multiply(new BigDecimal(menuProduct.getQuantity())));
-		menu.setName("신상치킨x3");
 
 		menuService.create(menu);
 
@@ -113,13 +107,10 @@ class MenuServiceTest {
 
 		menuProducts.add(menuProduct);
 
-		Menu menu = new Menu();
 		MenuGroup menuGroup = 메뉴그룹생성();
 
-		menu.setMenuGroupId(menuGroup.getId());
+		Menu menu = new Menu("신상치킨x3", product.getPrice().multiply(new BigDecimal(menuProduct.getQuantity())), menuGroup.getId());
 		menu.setMenuProducts(menuProducts);
-		menu.setPrice(null);
-		menu.setName("신상치킨x3");
 
 		assertThatThrownBy(() -> menuService.create(menu))
 				.isInstanceOf(IllegalArgumentException.class);
@@ -138,13 +129,10 @@ class MenuServiceTest {
 
 		menuProducts.add(menuProduct);
 
-		Menu menu = new Menu();
 		MenuGroup menuGroup = 메뉴그룹생성();
 
-		menu.setMenuGroupId(menuGroup.getId());
+		Menu menu = new Menu("신상치킨x3", product.getPrice().multiply(new BigDecimal(menuProduct.getQuantity())), menuGroup.getId());
 		menu.setMenuProducts(menuProducts);
-		menu.setPrice(new BigDecimal("-1"));
-		menu.setName("신상치킨x3");
 
 		assertThatThrownBy(() -> menuService.create(menu))
 				.isInstanceOf(IllegalArgumentException.class);
@@ -163,35 +151,10 @@ class MenuServiceTest {
 
 		menuProducts.add(menuProduct);
 
-		Menu menu = new Menu();
-
-		menu.setMenuGroupId(9999L);
-		menu.setMenuProducts(menuProducts);
-		menu.setPrice(product.getPrice().multiply(new BigDecimal(menuProduct.getQuantity())));
-		menu.setName("신상치킨x3");
-
-		assertThatThrownBy(() -> menuService.create(menu))
-				.isInstanceOf(IllegalArgumentException.class);
-	}
-
-	@Test
-	@DisplayName("메뉴등록 실패 상품정보 세팅하지 않음")
-	public void 메뉴등록_실패_없는상품정보() {
-		final List<MenuProduct> menuProducts = new ArrayList<>();
-
-		MenuProduct menuProduct = new MenuProduct();
-
-		menuProduct.setProductId(9999L);
-		menuProduct.setQuantity(3);
-
-		menuProducts.add(menuProduct);
-
-		Menu menu = new Menu();
 		MenuGroup menuGroup = 메뉴그룹생성();
 
-		menu.setMenuGroupId(menuGroup.getId());
+		Menu menu = new Menu("신상치킨x3", product.getPrice().multiply(new BigDecimal(menuProduct.getQuantity())), menuGroup.getId());
 		menu.setMenuProducts(menuProducts);
-		menu.setName("신상치킨x3");
 
 		assertThatThrownBy(() -> menuService.create(menu))
 				.isInstanceOf(IllegalArgumentException.class);
@@ -210,13 +173,10 @@ class MenuServiceTest {
 
 		menuProducts.add(menuProduct);
 
-		Menu menu = new Menu();
 		MenuGroup menuGroup = 메뉴그룹생성();
 
-		menu.setMenuGroupId(menuGroup.getId());
+		Menu menu = new Menu("신상치킨x3", new BigDecimal("9999999999"), menuGroup.getId());
 		menu.setMenuProducts(menuProducts);
-		menu.setPrice(new BigDecimal("9999999999"));
-		menu.setName("신상치킨x3");
 
 		assertThatThrownBy(() -> menuService.create(menu))
 				.isInstanceOf(IllegalArgumentException.class);

@@ -204,13 +204,10 @@ class OrderServiceTest {
 
 		menuProducts.add(menuProduct);
 
-		Menu menu = new Menu();
-		MenuGroup menuGroup = 메뉴그룹생성();
 
-		menu.setMenuGroupId(menuGroup.getId());
+		MenuGroup menuGroup = 메뉴그룹생성();
+		Menu menu = new Menu(1L,"신상치킨", product.getPrice().multiply(new BigDecimal(menuProduct.getQuantity())), menuGroup.getId());
 		menu.setMenuProducts(menuProducts);
-		menu.setPrice(product.getPrice().multiply(new BigDecimal(menuProduct.getQuantity())));
-		menu.setName("신상치킨");
 
 		return menuService.create(menu);
 	}
